@@ -3,9 +3,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const path = require('path');
 
 const entry = {
-  index: './src/entry/index.tsx',
-  login: './src/entry/login.tsx',
-  signup: './src/entry/signup.tsx',
+  index: './src/main/index.tsx',
+  login: './src/login/index.tsx',
+  signup: './src/signup/index.tsx',
 };
 
 function capitalize(v) {
@@ -52,7 +52,7 @@ module.exports = {
         chunks: [k],
         title: `Plantr - ${capitalize(k)}`,
         filename: `${k}.html`,
-        template: path.resolve('./src/entry/tpl.html'),
+        template: path.resolve('./src/tpl.html'),
       });
     }),
   ],

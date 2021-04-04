@@ -1,5 +1,5 @@
-import './reset.css';
+import '../reset.css';
 import { render } from 'react-dom';
-import { Main } from '../main/Main';
+import { Main } from './Main';
 
 render(<Main />, document.getElementById('root'));

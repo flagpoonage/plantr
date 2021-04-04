@@ -1,6 +1,12 @@
 {
-  "name": "server",
+  "name": "@plantr/server",
   "version": "1.0.0",
   "main": "index.js",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "dev": "ts-node-dev src/index.ts"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.6"
+  }
 }
