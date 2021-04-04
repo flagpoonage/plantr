@@ -46,12 +46,19 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin(),
+    new HtmlWebpackPlugin({
+      inject: true,
+      chunks: ['index'],
+      title: `Plantr`,
+      filename: `index.html`,
+      template: path.resolve('./src/tpl.html'),
+    }),
     ...Object.keys(entry).map((k) => {
       return new HtmlWebpackPlugin({
         inject: true,
         chunks: [k],
         title: `Plantr - ${capitalize(k)}`,
-        filename: `${k}.html`,
+        filename: `${k}/index.html`,
         template: path.resolve('./src/tpl.html'),
       });
     }),
@@ -61,5 +68,6 @@ module.exports = {
   },
   devServer: {
     contentBase: path.resolve('./dist'),
+    writeToDisk: true,
   },
 };
