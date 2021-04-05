@@ -15,6 +15,7 @@
     "mini-css-extract-plugin": "^1.4.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-hook-form": "^7.0.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "rxjs": "^6.6.7",

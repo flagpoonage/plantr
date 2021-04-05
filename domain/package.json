@@ -1,6 +1,12 @@
 {
   "name": "@plantr/domain",
   "version": "1.0.0",
-  "main": "index.js",
-  "license": "MIT"
+  "main": "index.ts",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "express-joi-validation": "^5.0.0",
+    "joi": "^17.4.0",
+    "react-hook-form": "^7.0.0"
+  }
 }
