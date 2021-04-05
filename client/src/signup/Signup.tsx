@@ -1,3 +1,4 @@
+import { createUserFormValidation } from '@plantr/domain/create';
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
 
@@ -29,14 +30,7 @@ export function Signup(): ReactElement {
           type="text"
           placeholder="Name"
           autoComplete="name"
-          {...register('name', {
-            required: 'Please enter your name',
-            maxLength: {
-              value: 100,
-              message:
-                'Your name can be at most 50 characters long. If your name is longer, please provide a short alias that we can address you by.',
-            },
-          })}
+          {...register('name', createUserFormValidation.name)}
         />
         <p>{errors.name?.message}</p>
         <label htmlFor="email">Email address</label>
@@ -46,13 +40,7 @@ export function Signup(): ReactElement {
           placeholder="Email address"
           autoComplete="email"
           aria-invalid={!!errors.name?.message}
-          {...register('email', {
-            required: 'Please enter your email address',
-            pattern: {
-              value: /S+@S+.S+/,
-              message: 'The email address you entered is not valid',
-            },
-          })}
+          {...register('email', createUserFormValidation.email)}
         />
         <p aria-describes>{errors.email?.message}</p>
         <label htmlFor="username">Username</label>
@@ -61,11 +49,7 @@ export function Signup(): ReactElement {
           type="text"
           placeholder="Username"
           autoComplete="username"
-          {...register('username', {
-            required: 'Please enter a username',
-            minLength: { value: 3, message: 'Your username must be at least 3 characters long' },
-            maxLength: { value: 20, message: 'Your username must be at most 20 characters long' },
-          })}
+          {...register('username', createUserFormValidation.username)}
         />
         <p>{errors.username?.message}</p>
         <label htmlFor="password">Password</label>
@@ -74,10 +58,7 @@ export function Signup(): ReactElement {
           type="password"
           placeholder="Password"
           autoComplete="current-password"
-          {...register('password', {
-            required: 'Please enter a password',
-            minLength: { value: 12, message: 'Your password must be at least 12 characters long' },
-          })}
+          {...register('password', createUserFormValidation.password)}
         />
         <p>{errors.password?.message}</p>
         <button type="submit">{'Signup'}</button>
