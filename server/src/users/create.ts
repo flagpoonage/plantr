@@ -1,16 +1,14 @@
-import { Response } from 'express';
-import { ValidatedRequest } from 'express-joi-validation';
-import { CreateUserSchema, createUserSchema } from '@plantr/domain';
-import { IRouter } from 'express-serve-static-core';
-import { validator } from '../middleware';
+import { createUserEntity, CreateUserDto } from '@plantr/domain/create';
+import { createCredentialFromUser, User } from '@plantr/domain/entity';
+import { Credentials } from '../db/credentials';
+import { Users } from '../db/users';
 
-export function createUser(req: ValidatedRequest<CreateUserSchema>, res: Response): void {
-  console.log('Validated successfully', req.body);
-  res.send({ message: 'User created' });
-}
+export function createUser(data: CreateUserDto): User {
+  const user = Users.create(createUserEntity(data));
+  const crendentials = createCredentialFromUser(user, data.password);
 
-export function addCreateUserRoute(app: IRouter): void {
-  console.log('schema', createUserSchema);
+  Credentials.create(crendentials);
 
-  app.post('/users', validator.body(createUserSchema), createUser);
+  console.log('Validated successfully', data);
+  return user;
 }

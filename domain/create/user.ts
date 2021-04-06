@@ -1,5 +1,7 @@
 import { ValidatedRequestSchema, ContainerTypes } from 'express-joi-validation';
 import { FormValidationSchema } from '../utils';
+import { User } from '../entity/user';
+import { v4 as uuid } from 'uuid';
 
 import Joi from 'joi';
 
@@ -45,22 +47,44 @@ export interface CreateUserSchema extends ValidatedRequestSchema {
 export const createUserFormValidation: FormValidationSchema<CreateUserDto> = rules;
 
 export const createUserSchema = Joi.object<CreateUserDto>({
-  name: Joi.string()
-    .required()
-    .max(rules.name.maxLength.value)
-    .messages({ 'string.required': rules.name.required, 'string.max': rules.name.maxLength.message }),
+  name: Joi.string().required().max(rules.name.maxLength.value).messages({
+    'any.required': rules.name.required,
+    'string.empty': rules.name.required,
+    'string.max': rules.name.maxLength.message,
+  }),
   email: Joi.string().required().pattern(rules.email.pattern.value).messages({
-    'string.required': rules.email.required,
+    'any.required': rules.email.required,
+    'string.empty': rules.email.required,
     'string.pattern.base': rules.email.pattern.message,
   }),
   username: Joi.string().required().min(rules.username.minLength.value).max(rules.username.maxLength.value).messages({
-    'string.required': rules.username.required,
+    'any.required': rules.username.required,
+    'string.empty': rules.username.required,
     'string.min': rules.username.minLength.message,
     'string.max': rules.username.maxLength.message,
   }),
   password: Joi.string().required().min(rules.password.minLength.value).max(rules.password.maxLength.value).messages({
-    'string.required': rules.password.required,
-    'string.min': rules.username.minLength.message,
-    'string.max': rules.username.maxLength.message,
+    'any.required': rules.password.required,
+    'string.empty': rules.password.required,
+    'string.min': rules.password.minLength.message,
+    'string.max': rules.password.maxLength.message,
   }),
 });
+
+export function createUserEntity(dto: CreateUserDto): User {
+  const time = new Date().getTime();
+
+  return {
+    id: uuid(),
+    created_at: time,
+    updated_at: time,
+    email: dto.email,
+    username: dto.username,
+    name: dto.name,
+  };
+}
+
+export interface CreateUserResponse {
+  user: User;
+  session: unknown;
+}

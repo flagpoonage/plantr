@@ -2,21 +2,34 @@ import express from 'express';
 import { config as dotenv } from 'dotenv';
 import * as path from 'path';
 import { addUserRoutes } from './users/index';
-import { validationErrorHandler } from './middleware';
+import { configureJwt, encode, validationErrorHandler } from './middleware';
+import cors from 'cors';
+import { addSessionRoutes } from './sessions';
 
 dotenv({
   path: path.resolve('../.env'),
 });
 
-const app = express();
-const port = process.env.SRV_PORT;
+(async () => {
+  await configureJwt();
 
-app.use(express.json());
+  const app = express();
+  const port = process.env.SRV_PORT;
 
-addUserRoutes(app);
+  app.use(express.json());
+  app.use(cors());
 
-app.use(validationErrorHandler);
+  addUserRoutes(app);
+  addSessionRoutes(app);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
-});
+  app.use(validationErrorHandler);
+
+  app.post('/jwt', async (req, res) => {
+    const token = await encode(req.body);
+    res.send({ token });
+  });
+
+  app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`);
+  });
+})();

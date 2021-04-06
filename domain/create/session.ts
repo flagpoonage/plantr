@@ -24,10 +24,12 @@ export interface CreateSessionSchema extends ValidatedRequestSchema {
 export const createSessionFormValidation: FormValidationSchema<CreateSessionDto> = rules;
 
 export const createSessionSchema = Joi.object<CreateSessionDto>({
-  username: Joi.string().messages({
-    'string.required': rules.username.required,
+  username: Joi.string().required().messages({
+    'any.required': rules.username.required,
+    'string.empty': rules.username.required,
   }),
-  password: Joi.string().messages({
-    'string.required': rules.password.required,
+  password: Joi.string().required().messages({
+    'any.required': rules.password.required,
+    'string.empty': rules.password.required,
   }),
 });

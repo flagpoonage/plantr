@@ -1,14 +1,19 @@
 import { CreateSessionDto, createSessionFormValidation } from '@plantr/domain/create';
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
+import { apiPublic } from '../api';
 
 export function Login(): ReactElement {
   const { register, handleSubmit, formState } = useForm<CreateSessionDto>();
 
   const { errors } = formState;
 
-  function onSubmit(data: CreateSessionDto) {
-    console.log('Submitting', data);
+  async function onSubmit(data: CreateSessionDto) {
+    try {
+      const value = await apiPublic('/sessions').post(data).json();
+    } catch (exception) {
+      console.log('Error', exception);
+    }
   }
 
   return (
