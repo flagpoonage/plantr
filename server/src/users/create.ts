@@ -3,8 +3,9 @@ import { createCredentialFromUser, User } from '@plantr/domain/entity';
 import { Credentials } from '../db/credentials';
 import { Users } from '../db/users';
 
-export function createUser(data: CreateUserDto): User {
-  const user = Users.create(createUserEntity(data));
+export async function createUser(data: CreateUserDto): Promise<User> {
+  const user = createUserEntity(data);
+  await Users.create(user);
   const crendentials = createCredentialFromUser(user, data.password);
 
   Credentials.create(crendentials);

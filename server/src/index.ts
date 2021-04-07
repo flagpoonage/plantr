@@ -1,17 +1,22 @@
 import express from 'express';
 import { config as dotenv } from 'dotenv';
 import * as path from 'path';
-import { addUserRoutes } from './users/index';
-import { configureJwt, encode, validationErrorHandler } from './middleware';
-import cors from 'cors';
-import { addSessionRoutes } from './sessions';
 
 dotenv({
   path: path.resolve('../.env'),
 });
 
+import { addUserRoutes } from './users/index';
+import { configureJwt, encode, validationErrorHandler } from './middleware';
+import cors from 'cors';
+import { addSessionRoutes } from './sessions';
+import { Users } from './db/users';
+import { Credentials } from './db/credentials';
+
 (async () => {
   await configureJwt();
+  await Users.load();
+  await Credentials.load();
 
   const app = express();
   const port = process.env.SRV_PORT;

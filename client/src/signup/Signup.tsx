@@ -1,24 +1,24 @@
-import { createUserFormValidation } from '@plantr/domain/create';
+import { CreateUserDto, createUserFormValidation } from '@plantr/domain/create';
+import { errorResponseToFormValidation } from '@plantr/domain/responses';
 import { ReactElement } from 'react';
 import { useForm } from 'react-hook-form';
-
-interface SignupFormValues {
-  username: string;
-  password: string;
-  name: string;
-  email: string;
-}
+import { apiPublic } from '../api';
 
 export function Signup(): ReactElement {
-  const { register, handleSubmit, formState } = useForm<SignupFormValues>();
+  const { register, handleSubmit, formState, setError } = useForm<CreateUserDto>();
 
   const { errors } = formState;
 
-  function onSubmit(data: any) {
-    console.log('Submitting', data);
+  async function onSubmit(data: CreateUserDto) {
+    try {
+      const value = await apiPublic('/users').post(data).json();
+      console.log(value);
+    } catch (exception) {
+      errorResponseToFormValidation(exception.json).forEach(([key, error]) =>
+        setError(key as keyof CreateUserDto, error)
+      );
+    }
   }
-
-  console.log(errors);
 
   return (
     <div>
